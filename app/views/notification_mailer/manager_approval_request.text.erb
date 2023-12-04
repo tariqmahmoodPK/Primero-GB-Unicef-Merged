@@ -1,0 +1,14 @@
+===============================================
+
+<%=
+  t(
+    @email_content_text_yml_key,
+    user_role_name: @role_name,
+    user: @user.user_name, approval_type: @approval_type,
+    case_id: (@whatsapp_check ? @case_id : link_to(@case_id, url_for_v2(@child))),
+    locale: @locale_email
+  ).html_safe
+%>
+
+Thank you,
+KP CP-IMS

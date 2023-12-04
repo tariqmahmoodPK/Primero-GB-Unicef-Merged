@@ -1,0 +1,142 @@
+name: App
+on:
+  pull_request:
+    branches:
+      - main
+      - 'release-*'
+      - develop_react_upgrade
+  workflow_dispatch:
+
+jobs:
+  server-test:
+    name: RSpec Test
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:14.15
+        env:
+          POSTGRES_DB: primero_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgrespassword
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready 
+          --health-interval 10s 
+          --health-timeout 5s 
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - name: Build/Run Solr
+        run: |
+          cd docker && ./build.sh solr
+          docker run -v solr_cores:/var/solr primeroims/solr:latest make-primero-core.sh primero-test
+          docker images
+          docker run -d -p 8983:8983 -v solr_cores:/var/solr --name=primero_solr_1 primeroims/solr:latest
+          docker ps
+      - name: Server tests
+        run: ./bin/run_server_tests.sh github-actions
+        shell: bash
+  # Running front-end mocha test in batches. Running on single process causes test 
+  # to run out of resources. This causes a few test to randomly timeout.
+  client-test-1:
+    name: Client Test (Batch 1)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
+      - name: Run client tests
+        run: |
+          npm ci
+          npm run test:batch:1
+  client-test-2:
+    name: Client Test (Batch 2)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
+      - name: Run client tests
+        run: |
+          npm ci
+          npm run test:batch:2
+  client-test-3:
+    name: Client Test (Batch 3)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
+      - name: Run client tests
+        run: |
+          npm ci
+          npm run test:batch:3
+  client-test-4:
+    name: Client Test (Batch 4)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
+      - name: Run client tests
+        run: |
+          npm ci
+          npm run test:batch:4
+  client-test-5:
+    name: Client Test (Batch 5)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
+      - name: Run client tests
+        run: |
+          npm ci
+          npm run test:batch:5
+  client-test-new:
+    name: Client Test (New)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
+      - name: Run client tests
+        run: |
+          npm ci
+          npm run test:new -- --maxWorkers=2
+  client-lint:
+    name: Client Linter
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
+      - name: Run client linter
+        run: |
+          npm ci
+          npm run lint

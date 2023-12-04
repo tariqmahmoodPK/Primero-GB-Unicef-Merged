@@ -1,0 +1,5 @@
+Dear SCW / Psychologist,
+A new case <%= @whatsapp_check ? @case_record&.short_id : link_to(@case_record&.short_id, url_for_v2(@case_record)) %> has been assigned to you by CPO <%= @cpo_user_name %>. Please proceed to register the case immediately, by logging into your CP-IMS account.
+
+Thank you,
+KP CP-IMS

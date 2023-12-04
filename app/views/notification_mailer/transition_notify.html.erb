@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="<%= @transition&.transitioned_to_user&.locale || I18n.locale %>">
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  </head>
+  <body>
+    <p>
+      <%= t( @email_content_html_yml_key,
+          user_role_name: @transition&.transitioned_to_user&.role.name,
+          user: @transition.transitioned_by,
+          agency: @transition&.transitioned_by_user&.agency&.name,
+          record_type: t("forms.record_types.#{@transition&.record.class.parent_form}"),
+          record_id: (@whatsapp_check ? @transition&.short_id : link_to(@transition&.short_id, url_for_v2(@transition))),
+          service_type: @transition.service,
+          locale: @locale_email,
+          location: @location,
+          workflow_stage: @transition&.record.workflow
+        ).html_safe
+      %>
+    </p>
+
+    <p>Thank you,</p>
+    <p>KP CP-IMS</p>
+  </body>
+</html>

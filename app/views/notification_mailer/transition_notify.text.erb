@@ -1,0 +1,16 @@
+===============================================
+
+<%= t( @email_content_text_yml_key,
+    user: @transition.transitioned_by,
+    agency: @transition&.transitioned_by_user&.agency&.name,
+    record_type: t("forms.record_types.#{@transition&.record.class.parent_form}"),
+    record_id: (@whatsapp_check ? @transition&.short_id : link_to(@transition&.short_id, url_for_v2(@transition))),
+    service_type: @transition.service,
+    locale: @locale_email,
+    location: @location,
+    workflow_stage: @transition&.record.workflow
+  ).html_safe
+%>
+
+Thank you,
+KP CP-IMS

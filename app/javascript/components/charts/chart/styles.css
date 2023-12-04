@@ -1,0 +1,10 @@
+/* TODO Fix this CSS */
+.description {
+  /* font-size: $(theme.typography.pxToRem(14)); */
+  /* color: $(theme.primero.colors.darkGrey); */
+  font-size: large;
+  line-height: 1em;
+  color: red;
+  padding: 0 16px;
+  margin: 0 10px 15px 0;
+}

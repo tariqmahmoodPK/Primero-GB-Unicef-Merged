@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="<%= @manager.locale %>">
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  </head>
+  <body>
+    <p><%=
+      t(
+        @email_content_html_yml_key,
+        user_role_name: @role_name,
+        user: @user&.user_name, approval_type: @approval_type,
+        case_id: (@whatsapp_check ? @case_id : link_to(@case_id, url_for_v2(@child))),
+        locale: @locale_email
+      ).html_safe
+    %></p>
+
+    <p>Thank you,</p>
+    <p>KP CP-IMS</p>
+  </body>
+</html>

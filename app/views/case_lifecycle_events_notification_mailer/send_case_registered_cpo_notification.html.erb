@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  </head>
+  <body>
+    <p>Dear CPO,</p>
+    <p>A case <strong><%= @whatsapp_check ? @case_record&.short_id :link_to(@case_record&.short_id, url_for_v2(@case_record)), %></strong> has been referred to you via the helpline. Kindly log into your CP-IMS account and allocate it to either a SCW or a Psychologist.</p>
+    <p>Thank you,</p>
+    <p>KP CP-IMS</p>
+  </body>
+</html>
